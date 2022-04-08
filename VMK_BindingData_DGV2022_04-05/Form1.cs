@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Text;
 
 namespace VMK_BindingData_DGV2022_04_05
 {
@@ -19,21 +20,21 @@ namespace VMK_BindingData_DGV2022_04_05
             dataList.Add(new TableRowData(1, "Значение 1_1", "Значение 1_2", true));
             dataList.Add(new TableRowData(2, "Значение 2_1", "Значение 2_2", false));
             dataList.Add(new TableRowData(3, "Значение 3_1", "Значение 3_2", true));
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            dataList[1].IsChecked = !dataList[1].IsChecked;
+            
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var f2 = new EditForm();
+            var newData = new TableRowData();
+            var f2 = new EditForm(newData);
             //f2.Show(this);
             if (f2.ShowDialog(this) == DialogResult.OK)
             {
-                dataList.Add(f2.UserData);
+                dataList.Add(newData);
             }
         }
 

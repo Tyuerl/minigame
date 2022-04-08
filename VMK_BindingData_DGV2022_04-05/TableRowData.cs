@@ -44,6 +44,8 @@ namespace VMK_BindingData_DGV2022_04_05
             get => _value2;
             set
             {
+                if (value.Trim().Length == 0)
+                    throw new ArgumentException("Строка не должна быть пустой");
                 _value2 = value;
                 OnPropertyChanged();
             }
@@ -66,6 +68,11 @@ namespace VMK_BindingData_DGV2022_04_05
             Value1 = value1;
             Value2 = value2;
             IsChecked = isChecked;
+        }
+
+        public TableRowData()
+        {
+            Value2 = "Empty String";
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
