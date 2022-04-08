@@ -75,5 +75,6 @@ namespace VMK_BindingData_DGV2022_04_05
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

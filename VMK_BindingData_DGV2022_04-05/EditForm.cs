@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace VMK_BindingData_DGV2022_04_05
+﻿namespace VMK_BindingData_DGV2022_04_05
 {
     public partial class EditForm : Form
     {
-        public TableRowData UserData { get; private set; }
-        public EditForm()
+        public TableRowData UserData { get; set; }
+        public EditForm(TableRowData ud)
         {
             InitializeComponent();
             DialogResult = DialogResult.Cancel;
+            UserData = ud;
+            numericUpDown1.DataBindings.Add("Text", UserData, "Id");
         }
 
         private void button1_Click(object sender, EventArgs e)

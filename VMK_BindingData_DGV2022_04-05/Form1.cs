@@ -29,8 +29,23 @@ namespace VMK_BindingData_DGV2022_04_05
 
         private void äîáàâèòüToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var f2 = new EditForm();
+            ShowEditForm();
+        }
+
+        private void ðåäàêòèðîâàòüToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                var d = dataGridView1.SelectedRows[0].Index;
+                ShowEditForm(dataList[d]);
+            }
+        }
+
+        private void ShowEditForm(TableRowData? d = null)
+        {
+            var f2 = new EditForm(d);
             //f2.Show(this);
+            //f2.UserData = d;
             if (f2.ShowDialog(this) == DialogResult.OK)
             {
                 dataList.Add(f2.UserData);
