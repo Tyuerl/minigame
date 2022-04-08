@@ -36,6 +36,15 @@ namespace VMK_BindingData_DGV2022_04_05
                 dataList.Add(f2.UserData);
             }
         }
+
+        private void ğåäàêòèğîâàòüToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var f2 = new EditForm(dataList[dataGridView1.SelectedRows[0].Index]);
+            if (f2.ShowDialog(this) == DialogResult.OK)
+            {
+                //dataList.Add(f2.UserData);
+            }
+        }
     }
 
 }

@@ -13,10 +13,15 @@ namespace VMK_BindingData_DGV2022_04_05
     public partial class EditForm : Form
     {
         public TableRowData UserData { get; private set; }
-        public EditForm()
+        public EditForm(TableRowData? ud = null)
         {
             InitializeComponent();
             DialogResult = DialogResult.Cancel;
+            UserData = ud;
+            if (UserData is not null)
+            {
+                numericUpDown1.DataBindings
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
