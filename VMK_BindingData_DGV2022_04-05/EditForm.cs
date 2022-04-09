@@ -4,21 +4,28 @@ public partial class EditForm : Form
 {
     // Свойство для хранения информации об объекте
     public TableRowData UserData { get; }
+
     // Резервная копия данных объекта, полученная из основной формы
     private readonly TableRowData _userBackupData;
+    
     // Информация об исключении при редактировании данных (при наличии ошибок)
     private BindingException? _bindingException;
+    
     public EditForm(TableRowData? ud = null)
     {
         InitializeComponent();
+        
         // Результат работы диалога по умолчанию (необходимо для закрытия окна по [x])
         DialogResult = DialogResult.Cancel;
+        
         // Если переданые данные из главной формы...
         if (ud is not null)
             UserData = ud; // сохраняем их в свойстве с данными
         else UserData = new TableRowData(); // ... иначе - создаем новое свойство с данными
+        
         // Делаем резервную копию исходно переданных данных на случай отмены радактирования
         _userBackupData = UserData.Copy();
+        
         // Производим связывание данных между графическими элементами и свойством с хранимой информацией об объекте
         numericUpDown1.DataBindings.Add("Value", UserData, "Id");
         textBox1.DataBindings.Add("Text", UserData, "Value1");
@@ -41,6 +48,7 @@ public partial class EditForm : Form
             textBox2.BackColor = Color.OrangeRed;
             textBox2.Focus();
         }
+        
         // Сохраняем информацию о произошедшем исключении в поле класса
         _bindingException = e.Exception as BindingException;
     }
@@ -59,12 +67,15 @@ public partial class EditForm : Form
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error
             );
+            
             // и не даем окну закрыться. 
             return;
         }
+
         // Сюда попадем только если ошибок нет и данные можно сохранять
         // Установим результат работы с диалоговым окном
         DialogResult = DialogResult.OK;
+        
         // И закроем окно.
         Close();
     }
