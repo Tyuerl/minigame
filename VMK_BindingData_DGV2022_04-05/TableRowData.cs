@@ -45,7 +45,7 @@ namespace VMK_BindingData_DGV2022_04_05
             set
             {
                 if (value.Trim().Length == 0)
-                    throw new ArgumentException("Строка не должна быть пустой");
+                    throw new BindingException("Значение 2", "Строка не должна быть пустой");
                 _value2 = value;
                 OnPropertyChanged();
             }
@@ -70,11 +70,30 @@ namespace VMK_BindingData_DGV2022_04_05
             IsChecked = isChecked;
         }
 
+        // Конструктор по умолчанию удобно использовать для создания новых значений
         public TableRowData()
         {
-            Value2 = "Empty String";
+            // В нем необходимо предусмотреть, чтобы все свойства имели допустимые значения
+            Value2 = "-";
         }
 
+        // Метод для копирования объекта
+        public TableRowData Copy() => new (Id, Value1, Value2, IsChecked);
+        // Метод копирования данного объекта в другой, указанный в параметре
+        // (можно использовать для восстановления данных из резервной копии
+        // при отказе пользователя от сохранения сделанных изменений)
+        public void CopyTo(TableRowData? trd)
+        {
+            if (trd is not null)
+            {
+                trd.Id = Id;
+                trd.Value1 = Value1;
+                trd.Value2 = Value2;
+                trd.IsChecked = IsChecked;
+            }
+        }
+
+        // Для автоматического обновления таблицы с данными
         public event PropertyChangedEventHandler? PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
