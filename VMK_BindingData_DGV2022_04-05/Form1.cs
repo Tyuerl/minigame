@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Text;
+using System.Text.Json;
 
 namespace VMK_BindingData_DGV2022_04_05
 {
@@ -19,9 +20,39 @@ namespace VMK_BindingData_DGV2022_04_05
             dataList.Add(new TableRowData(3, "Значение 3_1", "Значение 3_2", true));
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
+            if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                var filename = saveFileDialog1.FileName;
+                using var file = new FileStream(filename, FileMode.Create);
+                using var sw = new StreamWriter(file, Encoding.UTF8);
+                var jso = new JsonSerializerOptions();
+                jso.WriteIndented = false;
+                foreach (var elem in dataList)
+                {
+                    sw.WriteLine(JsonSerializer.Serialize<TableRowData>(elem, jso));
+                }
+            }
+        }
 
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                var filename = openFileDialog1.FileName;
+                using var sr = new StreamReader(filename, Encoding.UTF8);
+                dataList.Clear();
+                while (!sr.EndOfStream)
+                {
+                    var line = sr.ReadLine() ?? "";
+                    var obj = JsonSerializer.Deserialize<TableRowData>(line);
+                    if (obj is not null)
+                    {
+                        dataList.Add(obj);
+                    }
+                }
+            }
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -60,6 +91,16 @@ namespace VMK_BindingData_DGV2022_04_05
 
             MessageBox.Show("Ну и правильно! Мало ли для чего еще пригодятся!", "(...испугааался...)",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                var filename = saveFileDialog1.FileName;
+                using var fs = new FileStream(filename, FileMode.Create);
+                JsonSerializer.Serialize(fs, dataList);
+            }
         }
     }
 
