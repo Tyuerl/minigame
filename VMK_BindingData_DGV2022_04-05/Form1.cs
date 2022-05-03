@@ -15,9 +15,17 @@ namespace VMK_BindingData_DGV2022_04_05
         private void Form1_Load(object sender, EventArgs e)
         {
             dataGridView1.DataSource = dataList;
-            dataList.Add(new TableRowData(1, "Значение 1_1", "Значение 1_2", true));
-            dataList.Add(new TableRowData(2, "Значение 2_1", "Значение 2_2", false));
-            dataList.Add(new TableRowData(3, "Значение 3_1", "Значение 3_2", true));
+            try
+            {
+                dataList.Add(new TableRowData(1, "Стив", "Джобс", true, new DateTime(1940, 03, 02), 500000));
+                dataList.Add(new TableRowData(2, "Стив", "Цукерберг", true, new DateTime(1940, 03, 02), 500000));
+                dataList.Add(new TableRowData(3, "Марк", "Цукерберг", true, new DateTime(1940, 03, 02), 500000));
+            }
+            catch (BindingException)
+            {
+                MessageBox.Show("Введите данные корректно");
+            }
+
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -40,29 +48,46 @@ namespace VMK_BindingData_DGV2022_04_05
         {
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
             {
+                bool t = true;
                 var filename = openFileDialog1.FileName;
                 using var sr = new StreamReader(filename, Encoding.UTF8);
                 dataList.Clear();
-                while (!sr.EndOfStream)
+                while (!sr.EndOfStream && t)
                 {
                     var line = sr.ReadLine() ?? "";
-                    var obj = JsonSerializer.Deserialize<TableRowData>(line);
-                    if (obj is not null)
+                    try
                     {
-                        dataList.Add(obj);
+                        var obj = JsonSerializer.Deserialize<TableRowData>(line);
+                        if (obj is not null)
+                        {
+                            dataList.Add(obj);
+                        }
                     }
+                    catch (JsonException)
+                    {
+                        MessageBox.Show("вы используете не того формата таблицу");
+                        t = false;
+                    }
+                   
                 }
             }
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var f2 = new EditForm();
-            //f2.Show(this); //-- открытие формы в немодальном режиме
-            if (f2.ShowDialog(this) == DialogResult.OK)
-            {
-                dataList.Add(f2.UserData);
+            try { 
+                var f2 = new EditForm();
+                if (f2.ShowDialog(this) == DialogResult.OK)
+                {
+                    dataList.Add(f2.UserData);
+                }
             }
+            catch(BindingException)
+            {
+                MessageBox.Show("Введите корректные данные\nСтроки имени и фамилии не дложны быть пустыми");
+            }
+            //f2.Show(this); //-- открытие формы в немодальном режиме
+
         }
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -76,17 +101,9 @@ namespace VMK_BindingData_DGV2022_04_05
             if (MessageBox.Show("Вы уверены, что хотите удалить данные из списка?", "Внимание!",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (MessageBox.Show("Прям точно уверены? Данные нельзя будет восстановить!", "Ой!",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
-                {
-                    if (MessageBox.Show("Ну, тогда я удаляю, да?", "Последний шанс!", MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Hand) == DialogResult.Yes)
-                    {
-                        dataList.RemoveAt(dataGridView1.SelectedRows[0].Index);
-                        MessageBox.Show("Удалил! ;(", "Фсё! :(", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
-                    }
-                }
+                dataList.RemoveAt(dataGridView1.SelectedRows[0].Index);
+                MessageBox.Show("Удалил! ;(", "Фсё! :(", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
 
             MessageBox.Show("Ну и правильно! Мало ли для чего еще пригодятся!", "(...испугааался...)",
@@ -101,6 +118,11 @@ namespace VMK_BindingData_DGV2022_04_05
                 using var fs = new FileStream(filename, FileMode.Create);
                 JsonSerializer.Serialize(fs, dataList);
             }
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
         }
     }
 

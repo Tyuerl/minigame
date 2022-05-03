@@ -9,13 +9,23 @@ using VMK_BindingData_DGV2022_04_05.Annotations;
 
 namespace VMK_BindingData_DGV2022_04_05
 {
+
+    enum Education
+    {
+        Bachelor,
+        Magister,
+        Specialist,
+        Secondary
+    }
+
     public class TableRowData : INotifyPropertyChanged
     {
         private int _id;
-        private string _value1;
-        private string _value2;
-        private bool _isChecked;
-
+        private string _fname;
+        private string _sname;
+        private DateTime _dateBirth;
+        private bool _isMale;
+        private double _salary;
         [DisplayName("Номер")]
         public int Id
         {
@@ -27,58 +37,103 @@ namespace VMK_BindingData_DGV2022_04_05
             }
         }
 
-        [DisplayName("Значение 1")]
-        public string Value1
+        [DisplayName("Фамилия")]
+        public string Sname
         {
-            get => _value1;
-            set
-            {
-                _value1 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [DisplayName("Значение 2")]
-        public string Value2
-        {
-            get => _value2;
+            get => _sname;
             set
             {
                 if (value.Trim().Length == 0)
-                    throw new BindingException("Значение 2", "Строка не должна быть пустой");
-                _value2 = value;
+                    throw new BindingException("Фамилия", "Строка не должна быть пустой");
+                _sname = value;
                 OnPropertyChanged();
             }
-        }
 
-        [DisplayName("Включено?")]
-        public bool IsChecked
+        }
+        [DisplayName("Имя")]
+        public string Fname
         {
-            get => _isChecked;
+            get => _fname;
             set
             {
-                _isChecked = value;
+              //  if (value.Trim().Length == 0)
+                  //  throw new BindingException("Имя", "Строка не должна быть пустой");
+                _fname = value;
                 OnPropertyChanged();
             }
         }
 
-        public TableRowData(int id, string value1, string value2, bool isChecked)
+        [DisplayName("Дата рождения")]
+        public DateTime DateBirth
+        {
+            get => _dateBirth;
+            set
+            {
+               // if (value.Year < 14)
+                 //   throw new BindingException("Дата рождения", "Работнику не может быть меньше 14 лет");
+                _dateBirth = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        [DisplayName("Мужчина?")]
+        public bool IsMale
+        {
+            get => _isMale;
+            set
+            {
+                _isMale = value;
+            }
+        }
+
+        [DisplayName("З/п")]
+        public double Salary
+        {
+            get => _salary;
+            set
+            {
+              // if (value <= 0)
+                //    throw new BindingException("Зарплата", "Зп не может быть <= 0");
+                _salary = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public TableRowData(int id, string fname, string sname, bool ismale, DateTime birthdate, double salary)
         {
             Id = id;
-            Value1 = value1;
-            Value2 = value2;
-            IsChecked = isChecked;
+            this.Fname = fname;
+            Sname = sname;
+            IsMale = ismale;
+            DateBirth = birthdate;
+            Salary = salary;
         }
 
         // Конструктор по умолчанию удобно использовать для создания новых значений
         public TableRowData()
         {
             // В нем необходимо предусмотреть, чтобы все свойства имели допустимые значения
-            Value2 = "-";
+            _id = 1;
+            _fname = "-";
+            _sname = "-";
+            _isMale = true;
+            _dateBirth = new DateTime(1754, 01, 01);
+            _salary = 1;
         }
 
         // Метод для копирования объекта
-        public TableRowData Copy() => new (Id, Value1, Value2, IsChecked);
+        public TableRowData Copy()
+        {
+            TableRowData a = new TableRowData();
+
+            a.Id = _id; 
+            a.Fname = _fname;
+            a.Sname = _sname;
+            a.IsMale = _isMale;
+            a.DateBirth = _dateBirth;
+            a.Salary = _salary;
+            return (a);
+        }
         // Метод копирования данного объекта в другой, указанный в параметре
         // (можно использовать для восстановления данных из резервной копии
         // при отказе пользователя от сохранения сделанных изменений)
@@ -86,10 +141,12 @@ namespace VMK_BindingData_DGV2022_04_05
         {
             if (trd is not null)
             {
-                trd.Id = Id;
-                trd.Value1 = Value1;
-                trd.Value2 = Value2;
-                trd.IsChecked = IsChecked;
+                trd.Id = _id;
+                trd.Fname = _fname;
+                trd.Sname = _sname;
+                trd.IsMale = _isMale;
+                trd.DateBirth = _dateBirth;
+                trd.Salary = _salary;
             }
         }
 

@@ -19,24 +19,27 @@ public partial class EditForm : Form
         DialogResult = DialogResult.Cancel;
         
         // Если переданые данные из главной формы...
-        if (ud is not null)
+       if (ud is not null)
             UserData = ud; // сохраняем их в свойстве с данными
-        else UserData = new TableRowData(); // ... иначе - создаем новое свойство с данными
+        UserData = new TableRowData(); // ... иначе - создаем новое свойство с данными
         
         // Делаем резервную копию исходно переданных данных на случай отмены радактирования
         _userBackupData = UserData.Copy();
         
         // Производим связывание данных между графическими элементами и свойством с хранимой информацией об объекте
         numericUpDown1.DataBindings.Add("Value", UserData, "Id");
-        textBox1.DataBindings.Add("Text", UserData, "Value1");
-        var v2Binding = textBox2.DataBindings.Add("Text", UserData, "Value2");
+        textBox1.DataBindings.Add("Text", UserData, "Sname");
+       dateTimePicker1.DataBindings.Add("Value", UserData, "DateBirth");
+        numericUpDown2.DataBindings.Add("Value", UserData, "Salary");
+        checkBox1.DataBindings.Add("Checked", UserData, "IsMale");
+        var v2Binding = textBox2.DataBindings.Add("Text", UserData, "Fname");
         // Включаем поддержку форматирования ввода
         // (обеспечивает контроль ошибок при вводе данных)
-        v2Binding.FormattingEnabled = true; // !!!!
+       v2Binding.FormattingEnabled = true; // !!!!
         // Назначаем метод, который будет вызываться для анализа
         // введенных в проверяемое поле данных
         v2Binding.BindingComplete += V2BindingComplete;
-        checkBox1.DataBindings.Add("Checked", UserData, "IsChecked");
+        
     }
 
     private void V2BindingComplete(object? sender, BindingCompleteEventArgs e)
@@ -95,5 +98,20 @@ public partial class EditForm : Form
         // Если пользователь редактирует неверное поле, убираем подсветку,
         // сигнализирующую об ошибке. 
         textBox2.BackColor = Color.White;
+    }
+
+    private void label2_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void checkBox1_CheckedChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label4_Click(object sender, EventArgs e)
+    {
+
     }
 }
