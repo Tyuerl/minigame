@@ -11,17 +11,18 @@ public partial class EditForm : Form
     // Информация об исключении при редактировании данных (при наличии ошибок)
     private BindingException? _bindingException;
     
-    public EditForm(TableRowData? ud = null)
+    public  EditForm(TableRowData? ud = null)
     {
         InitializeComponent();
-        
+               
         // Результат работы диалога по умолчанию (необходимо для закрытия окна по [x])
         DialogResult = DialogResult.Cancel;
         
         // Если переданые данные из главной формы...
-       if (ud is not null)
-            UserData = ud; // сохраняем их в свойстве с данными
-        UserData = new TableRowData(); // ... иначе - создаем новое свойство с данными
+        if (ud is not null)
+            UserData = ud;
+        else// сохраняем их в свойстве с данными
+            UserData = new TableRowData(); // ... иначе - создаем новое свойство с данными
         
         // Делаем резервную копию исходно переданных данных на случай отмены радактирования
         _userBackupData = UserData.Copy();

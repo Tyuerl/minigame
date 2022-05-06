@@ -26,6 +26,7 @@ namespace VMK_BindingData_DGV2022_04_05
         private DateTime _dateBirth;
         private bool _isMale;
         private double _salary;
+        private short _delay;
         [DisplayName("Номер")]
         public int Id
         {
@@ -56,8 +57,8 @@ namespace VMK_BindingData_DGV2022_04_05
             get => _fname;
             set
             {
-              //  if (value.Trim().Length == 0)
-                  //  throw new BindingException("Имя", "Строка не должна быть пустой");
+                if (value.Trim().Length == 0)
+                    throw new BindingException("Имя", "Строка не должна быть пустой");
                 _fname = value;
                 OnPropertyChanged();
             }
@@ -86,27 +87,41 @@ namespace VMK_BindingData_DGV2022_04_05
             }
         }
 
+        [DisplayName("Опозданий за квартал")]
+        public short Delay
+        {
+            get => _delay;
+            set
+            {
+                if (value < 0)
+                    throw new BindingException("Число", "Должно быть >= нуля");
+                _delay = value;
+                OnPropertyChanged();
+            }
+        }
+
         [DisplayName("З/п")]
         public double Salary
         {
             get => _salary;
             set
             {
-              // if (value <= 0)
-                //    throw new BindingException("Зарплата", "Зп не может быть <= 0");
+               if (value <= 0)
+                    throw new BindingException("Зарплата", "Зп не может быть <= 0");
                 _salary = value;
                 OnPropertyChanged();
             }
         }
 
-        public TableRowData(int id, string fname, string sname, bool ismale, DateTime birthdate, double salary)
+        public TableRowData(int id, string fname, string sname, bool ismale, DateTime birthdate, double salary, short delay)
         {
             Id = id;
-            this.Fname = fname;
+            Fname =  fname;
             Sname = sname;
             IsMale = ismale;
             DateBirth = birthdate;
             Salary = salary;
+            Delay = delay;
         }
 
         // Конструктор по умолчанию удобно использовать для создания новых значений
@@ -119,6 +134,7 @@ namespace VMK_BindingData_DGV2022_04_05
             _isMale = true;
             _dateBirth = new DateTime(1754, 01, 01);
             _salary = 1;
+            _delay = 0;
         }
 
         // Метод для копирования объекта
@@ -134,6 +150,7 @@ namespace VMK_BindingData_DGV2022_04_05
             a.Salary = _salary;
             return (a);
         }
+        
         // Метод копирования данного объекта в другой, указанный в параметре
         // (можно использовать для восстановления данных из резервной копии
         // при отказе пользователя от сохранения сделанных изменений)
