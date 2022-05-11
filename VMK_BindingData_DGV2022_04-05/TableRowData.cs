@@ -70,8 +70,8 @@ namespace VMK_BindingData_DGV2022_04_05
             get => _dateBirth;
             set
             {
-               // if (value.Year < 14)
-                 //   throw new BindingException("Дата рождения", "Работнику не может быть меньше 14 лет");
+                if (value.Year < 14)
+                    throw new BindingException("Дата рождения", "Работнику не может быть меньше 14 лет");
                 _dateBirth = value;
                 OnPropertyChanged();
             }
@@ -158,8 +158,8 @@ namespace VMK_BindingData_DGV2022_04_05
         {
             if (trd is not null)
             {
-                trd.Id = _id;
                 trd.Fname = _fname;
+                trd.Id = _id;
                 trd.Sname = _sname;
                 trd.IsMale = _isMale;
                 trd.DateBirth = _dateBirth;

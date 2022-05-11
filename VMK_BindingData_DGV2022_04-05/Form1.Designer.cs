@@ -30,6 +30,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.добавитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,15 +41,18 @@
             this.зарплатеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.номеруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.имениToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnLoad = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.stat = new System.Windows.Forms.Button();
-            this.delete = new System.Windows.Forms.Button();
-            this.button_infl = new System.Windows.Forms.Button();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.load = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteAll = new System.Windows.Forms.ToolStripButton();
+            this.adv = new System.Windows.Forms.ToolStripButton();
+            this.infl = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -61,13 +65,13 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.ContextMenuStrip = this.contextMenuStrip1;
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView1.Location = new System.Drawing.Point(37, 12);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 28);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 25;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(735, 374);
+            this.dataGridView1.Size = new System.Drawing.Size(706, 410);
             this.dataGridView1.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -140,26 +144,6 @@
             this.имениToolStripMenuItem.Text = "Имени";
             this.имениToolStripMenuItem.Click += new System.EventHandler(this.имениToolStripMenuItem_Click);
             // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(12, 392);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(186, 23);
-            this.btnSave.TabIndex = 1;
-            this.btnSave.Text = "Сохранить";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnLoad
-            // 
-            this.btnLoad.Location = new System.Drawing.Point(204, 392);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(186, 23);
-            this.btnLoad.TabIndex = 2;
-            this.btnLoad.Text = "Загрузить";
-            this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
-            // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "json";
@@ -172,74 +156,115 @@
             this.openFileDialog1.Filter = "Файлы JSON|*.json";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
-            // stat
+            // toolStrip1
             // 
-            this.stat.Location = new System.Drawing.Point(607, 392);
-            this.stat.Name = "stat";
-            this.stat.Size = new System.Drawing.Size(181, 23);
-            this.stat.TabIndex = 4;
-            this.stat.Text = "Статистика";
-            this.stat.UseVisualStyleBackColor = true;
-            this.stat.Click += new System.EventHandler(this.button2_Click);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButton1,
+            this.deleteAll,
+            this.adv,
+            this.infl});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(730, 25);
+            this.toolStrip1.TabIndex = 7;
+            this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
             // 
-            // delete
+            // toolStripDropDownButton1
             // 
-            this.delete.Location = new System.Drawing.Point(414, 392);
-            this.delete.Name = "delete";
-            this.delete.Size = new System.Drawing.Size(187, 23);
-            this.delete.TabIndex = 5;
-            this.delete.Text = "Удалить всех";
-            this.delete.UseVisualStyleBackColor = true;
-            this.delete.Click += new System.EventHandler(this.delete_Click);
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.load});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(49, 22);
+            this.toolStripDropDownButton1.Text = "Файл";
             // 
-            // button_infl
+            // toolStripMenuItem1
             // 
-            this.button_infl.Location = new System.Drawing.Point(12, 421);
-            this.button_infl.Name = "button_infl";
-            this.button_infl.Size = new System.Drawing.Size(186, 23);
-            this.button_infl.TabIndex = 6;
-            this.button_infl.Text = "Инфляция";
-            this.button_infl.UseVisualStyleBackColor = true;
-            this.button_infl.Click += new System.EventHandler(this.button_infl_Click);
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(133, 22);
+            this.toolStripMenuItem1.Text = "Сохранить";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // load
+            // 
+            this.load.Name = "load";
+            this.load.Size = new System.Drawing.Size(133, 22);
+            this.load.Text = "Загрузить";
+            this.load.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // deleteAll
+            // 
+            this.deleteAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.deleteAll.Image = ((System.Drawing.Image)(resources.GetObject("deleteAll.Image")));
+            this.deleteAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.deleteAll.Name = "deleteAll";
+            this.deleteAll.Size = new System.Drawing.Size(82, 22);
+            this.deleteAll.Text = "Удалить всех";
+            this.deleteAll.Click += new System.EventHandler(this.deleteAll_Click);
+            // 
+            // adv
+            // 
+            this.adv.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.adv.Image = ((System.Drawing.Image)(resources.GetObject("adv.Image")));
+            this.adv.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.adv.Name = "adv";
+            this.adv.Size = new System.Drawing.Size(72, 22);
+            this.adv.Text = "Статистика";
+            this.adv.Click += new System.EventHandler(this.toolStripButton3_Click);
+            // 
+            // infl
+            // 
+            this.infl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.infl.Image = ((System.Drawing.Image)(resources.GetObject("infl.Image")));
+            this.infl.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.infl.Name = "infl";
+            this.infl.Size = new System.Drawing.Size(69, 22);
+            this.infl.Text = "Инфляция";
+            this.infl.Click += new System.EventHandler(this.infl_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(759, 450);
-            this.Controls.Add(this.button_infl);
-            this.Controls.Add(this.delete);
-            this.Controls.Add(this.stat);
-            this.Controls.Add(this.btnLoad);
-            this.Controls.Add(this.btnSave);
+            this.ClientSize = new System.Drawing.Size(730, 450);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private DataGridView dataGridView1;
-        private Button btnSave;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem добавитьToolStripMenuItem;
         private ToolStripMenuItem редактироватьToolStripMenuItem;
         private ToolStripMenuItem удалитьToolStripMenuItem;
-        private Button btnLoad;
         private SaveFileDialog saveFileDialog1;
         private OpenFileDialog openFileDialog1;
-        private Button stat;
         private ToolStripMenuItem сортироватьПоToolStripMenuItem;
         private ToolStripMenuItem фамилииToolStripMenuItem;
         private ToolStripMenuItem зарплатеToolStripMenuItem;
         private ToolStripMenuItem номеруToolStripMenuItem;
         private ToolStripMenuItem имениToolStripMenuItem;
-        private Button delete;
-        private Button button_infl;
+        private ToolStrip toolStrip1;
+        private ToolStripButton adv;
+        private ToolStripButton infl;
+        private ToolStripButton deleteAll;
+        private ToolStripDropDownButton toolStripDropDownButton1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem load;
     }
 }

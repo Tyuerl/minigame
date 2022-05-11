@@ -30,47 +30,12 @@ namespace VMK_BindingData_DGV2022_04_05
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                var filename = saveFileDialog1.FileName;
-                using var file = new FileStream(filename, FileMode.Create);
-                using var sw = new StreamWriter(file, Encoding.UTF8);
-                var jso = new JsonSerializerOptions();
-                jso.WriteIndented = false;
-                foreach (var elem in dataList)
-                {
-                    sw.WriteLine(JsonSerializer.Serialize<TableRowData>(elem, jso));
-                }
-            }
+
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                bool t = true;
-                var filename = openFileDialog1.FileName;
-                using var sr = new StreamReader(filename, Encoding.UTF8);
-                dataList.Clear();
-                while (!sr.EndOfStream && t)
-                {
-                    var line = sr.ReadLine() ?? "";
-                    try
-                    {
-                        var obj = JsonSerializer.Deserialize<TableRowData>(line);
-                        if (obj is not null)
-                        {
-                            dataList.Add(obj);
-                        }
-                    }
-                    catch (JsonException)
-                    {
-                        MessageBox.Show("вы используете не того формата таблицу");
-                        t = false;
-                    }
-                   
-                }
-            }
+
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -86,19 +51,21 @@ namespace VMK_BindingData_DGV2022_04_05
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.SelectedRows.Count == 0)
+                return;
             var f2 = new EditForm(dataList[dataGridView1.SelectedRows[0].Index]);
             f2.ShowDialog(this);
         }
 
         private void button_infl_Click(object sender, EventArgs e)
         {
-            Form form3 = new InflForm(dataList);
-            form3.ShowDialog();
+
         }
 
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataList.Count == 0)
+            dataGridView1.Show();
+            if (dataList.Count == 0 || dataGridView1.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Удалять нечево");
                 return;
@@ -133,23 +100,7 @@ namespace VMK_BindingData_DGV2022_04_05
         //stat
         private void button2_Click(object sender, EventArgs e)
         {
-            int sum = 0;
-            double sr = 0;
-            int count_male = 0;
-            
-            foreach(var temp in dataList)
-            {
-                if (temp.IsMale == true)
-                    count_male++;
-                sum += (int)temp.Salary;
-            }
-            sr = ((double)sum) / dataList.Count;
-            MessageBox.Show(
-                "Сколько необходимо выплалить за месяц: " + sum + 
-                "\nСколько необходимо выплатить за квартал: " + sum * 4 + 
-                "\nСредняя зарпалат работникоv: " + sr + 
-                "\nПроцент Женского коллектива в кампании: " + (count_male % dataList.Count) + "%",
-                "Статистика", MessageBoxButtons.OK);
+
         }
 
         private void фамилииToolStripMenuItem_Click(object sender, EventArgs e)
@@ -229,6 +180,88 @@ namespace VMK_BindingData_DGV2022_04_05
 
         private void delete_Click(object sender, EventArgs e)
         {
+
+
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void toolStripDropDownButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                bool t = true;
+                var filename = openFileDialog1.FileName;
+                using var sr = new StreamReader(filename, Encoding.UTF8);
+                dataList.Clear();
+                while (!sr.EndOfStream && t)
+                {
+                    var line = sr.ReadLine() ?? "";
+                    try
+                    {
+                        var obj = JsonSerializer.Deserialize<TableRowData>(line);
+                        if (obj is not null)
+                        {
+                            dataList.Add(obj);
+                        }
+                    }
+                    catch (JsonException)
+                    {
+                        MessageBox.Show("вы используете не того формата таблицу");
+                        t = false;
+                    }
+
+                }
+            }
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            int sum = 0;
+            double sr = 0;
+            int count_male = 0;
+
+            foreach (var temp in dataList)
+            {
+                if (temp.IsMale == true)
+                    count_male++;
+                sum += (int)temp.Salary;
+            }
+            sr = ((double)sum) / dataList.Count;
+            MessageBox.Show(
+                "Сколько необходимо выплалить за месяц: " + sum +
+                "\nСколько необходимо выплатить за квартал: " + sum * 4 +
+                "\nСредняя зарпалат работникоv: " + sr +
+                "\nПроцент Женского коллектива в кампании: " + (count_male % dataList.Count) + "%",
+                "Статистика", MessageBoxButtons.OK);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                var filename = saveFileDialog1.FileName;
+                using var file = new FileStream(filename, FileMode.Create);
+                using var sw = new StreamWriter(file, Encoding.UTF8);
+                var jso = new JsonSerializerOptions();
+                jso.WriteIndented = false;
+                foreach (var elem in dataList)
+                {
+                    sw.WriteLine(JsonSerializer.Serialize<TableRowData>(elem, jso));
+                }
+            }
+        }
+
+        private void deleteAll_Click(object sender, EventArgs e)
+        {
             if (MessageBox.Show("Вы уверены, что хотите удалить данные из списка?", "Внимание!",
              MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
@@ -240,10 +273,13 @@ namespace VMK_BindingData_DGV2022_04_05
 
             MessageBox.Show("Ну и правильно! Мало ли для чего еще пригодятся!", "(...испугааался...)",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-
         }
 
-
+        private void infl_Click(object sender, EventArgs e)
+        {
+            Form form3 = new InflForm(dataList);
+            form3.ShowDialog();
+        }
     }
 
 }

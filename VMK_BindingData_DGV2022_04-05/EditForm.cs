@@ -26,35 +26,55 @@ public partial class EditForm : Form
         
         // Делаем резервную копию исходно переданных данных на случай отмены радактирования
         _userBackupData = UserData.Copy();
-        
+
+
         // Производим связывание данных между графическими элементами и свойством с хранимой информацией об объекте
         numericUpDown1.DataBindings.Add("Value", UserData, "Id");
-        textBox1.DataBindings.Add("Text", UserData, "Sname");
-       dateTimePicker1.DataBindings.Add("Value", UserData, "DateBirth");
+        dateTimePicker1.DataBindings.Add("Value", UserData, "DateBirth");
         numericUpDown2.DataBindings.Add("Value", UserData, "Salary");
         checkBox1.DataBindings.Add("Checked", UserData, "IsMale");
+        delay.DataBindings.Add("Value", UserData, "Delay");
+
+        var v2Binding2 = textBox1.DataBindings.Add("Text", UserData, "Sname");
         var v2Binding = textBox2.DataBindings.Add("Text", UserData, "Fname");
         // Включаем поддержку форматирования ввода
         // (обеспечивает контроль ошибок при вводе данных)
-       v2Binding.FormattingEnabled = true; // !!!!
+        v2Binding.FormattingEnabled = true; // !!!!
+ 
+        v2Binding2.FormattingEnabled = true;
+
         // Назначаем метод, который будет вызываться для анализа
         // введенных в проверяемое поле данных
         v2Binding.BindingComplete += V2BindingComplete;
-        
+        v2Binding2.BindingComplete += V2BindingComplete;
+
+
+
     }
 
     private void V2BindingComplete(object? sender, BindingCompleteEventArgs e)
     {
-        // Вызывается при изменении данных
-        if (e.BindingCompleteState != BindingCompleteState.Success)
-        {
-            // Если изменения прошли с ошибкой (сработало исключение в TableRowData)
-            textBox2.BackColor = Color.OrangeRed;
-            textBox2.Focus();
-        }
-        
         // Сохраняем информацию о произошедшем исключении в поле класса
         _bindingException = e.Exception as BindingException;
+        // Вызывается при изменении данных
+        if (e.BindingCompleteState != BindingCompleteState.Success && _bindingException != null)
+        {
+            // Если изменения прошли с ошибкой (сработало исключение в TableRowData) 
+            // красим текстбокс в котором ошибка
+            if (_bindingException.ErrorField == "Фамилия")
+            {
+                textBox1.BackColor = Color.OrangeRed;
+                textBox1.Focus();
+            }
+            if (_bindingException.ErrorField == "Имя")
+            {
+                textBox2.BackColor = Color.OrangeRed;
+                textBox2.Focus();
+            }
+        }
+        
+       
+
     }
 
     private void button1_Click(object sender, EventArgs e)
@@ -90,6 +110,7 @@ public partial class EditForm : Form
 
         // Восстанавливаем данные об объекте из резервной копии, чтобы
         // отменить возможные изменения, которые успел сделать пользователь
+      
         _userBackupData.CopyTo(UserData);
         Close();
     }
@@ -100,6 +121,14 @@ public partial class EditForm : Form
         // сигнализирующую об ошибке. 
         textBox2.BackColor = Color.White;
     }
+
+    private void textBox1_TextChanged(object sender, EventArgs e)
+    {
+        // Если пользователь редактирует неверное поле, убираем подсветку,
+        // сигнализирующую об ошибке. 
+        textBox1.BackColor = Color.White;
+    }
+
 
     private void label2_Click(object sender, EventArgs e)
     {
@@ -112,6 +141,12 @@ public partial class EditForm : Form
     }
 
     private void label4_Click(object sender, EventArgs e)
+    {
+
+    }
+
+
+    private void label5_Click(object sender, EventArgs e)
     {
 
     }
