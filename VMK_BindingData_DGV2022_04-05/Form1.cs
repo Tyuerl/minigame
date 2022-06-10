@@ -12,19 +12,15 @@ namespace VMK_BindingData_DGV2022_04_05
         }
 
         private BindingList<TableRowData> dataList = new();
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
             dataGridView1.DataSource = dataList;
-            try
-            {
-                dataList.Add(new TableRowData(1, "Стив", "Джобс", true, new DateTime(1940, 03, 02), 500000, 2));
-                dataList.Add(new TableRowData(2, "Стив", "Цукерберг", true, new DateTime(1940, 03, 02), 490000, 3));
-                dataList.Add(new TableRowData(3, "Марк", "Цукерберг", true, new DateTime(1940, 03, 02), 1000000, 0));
-            }
-            catch (BindingException)
-            {
-                MessageBox.Show("Введите данные корректно");
-            }
+
+            dataList.Add(new TableRowData(1, "Стив", "Джобс", true, new DateTime(1940, 03, 02), 500000, 2));
+            dataList.Add(new TableRowData(2, "Стив", "Цукерберг", true, new DateTime(1940, 03, 02), 490000, 3));
+            dataList.Add(new TableRowData(3, "Марк", "Цукерберг", true, new DateTime(1940, 03, 02), 1000000, 0));
 
         }
 
@@ -51,10 +47,18 @@ namespace VMK_BindingData_DGV2022_04_05
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count == 0)
-                return;
-            var f2 = new EditForm(dataList[dataGridView1.SelectedRows[0].Index]);
-            f2.ShowDialog(this);
+            try
+            {
+                if (dataGridView1.SelectedRows.Count == 0)
+                    return;
+                var f2 = new EditForm(dataList[dataGridView1.SelectedRows[0].Index]);
+                f2.ShowDialog(this);
+            }
+            catch (BindingException)
+            { 
+
+            }
+
         }
 
         private void button_infl_Click(object sender, EventArgs e)
@@ -103,80 +107,6 @@ namespace VMK_BindingData_DGV2022_04_05
 
         }
 
-        private void фамилииToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TableRowData temp = new TableRowData();
-            foreach (TableRowData i in dataList)
-            {
-                foreach(TableRowData j in dataList)
-                {
-                    if (j.Sname.CompareTo(i.Sname) > 0)
-                    {
-                        temp = i.Copy();
-                        j.CopyTo(i);
-                        temp.CopyTo(j);
-                       // MessageBox.Show("asdfasfd");
-                    }
-
-                }
-            }
-        }
-
-        private void имениToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TableRowData temp = new TableRowData();
-            foreach (TableRowData i in dataList)
-            {
-                foreach (TableRowData j in dataList)
-                {
-                    if (j.Fname.CompareTo(i.Fname) > 0)
-                    {
-                        temp = i.Copy();
-                        j.CopyTo(i);
-                        temp.CopyTo(j);
-                        // MessageBox.Show("asdfasfd");
-                    }
-                }
-            }
-        }
-
-        private void зарплатеToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TableRowData temp = new TableRowData();
-            foreach (TableRowData i in dataList)
-            {
-                foreach (TableRowData j in dataList)
-                {
-                    if (i.Salary > j.Salary)
-                    {
-                        temp = i.Copy();
-                        j.CopyTo(i);
-                        temp.CopyTo(j);
-                        // MessageBox.Show("asdfasfd");
-                    }
-                }
-            }
-
-        }
-
-        private void номеруToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TableRowData temp = new TableRowData();
-            foreach (TableRowData i in dataList)
-            {
-                foreach (TableRowData j in dataList)
-                {
-                    if (i.Id < j.Id)
-                    {
-                        temp = i.Copy();
-                        j.CopyTo(i);
-                        temp.CopyTo(j);
-                        // MessageBox.Show("asdfasfd");
-                    }
-                }
-            }
-
-        }
 
         private void delete_Click(object sender, EventArgs e)
         {
@@ -194,6 +124,7 @@ namespace VMK_BindingData_DGV2022_04_05
 
         }
 
+        //загрузить
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
@@ -223,27 +154,7 @@ namespace VMK_BindingData_DGV2022_04_05
             }
         }
 
-        private void toolStripButton3_Click(object sender, EventArgs e)
-        {
-            int sum = 0;
-            double sr = 0;
-            int count_male = 0;
-
-            foreach (var temp in dataList)
-            {
-                if (temp.IsMale == true)
-                    count_male++;
-                sum += (int)temp.Salary;
-            }
-            sr = ((double)sum) / dataList.Count;
-            MessageBox.Show(
-                "Сколько необходимо выплалить за месяц: " + sum +
-                "\nСколько необходимо выплатить за квартал: " + sum * 4 +
-                "\nСредняя зарпалат работникоv: " + sr +
-                "\nПроцент Женского коллектива в кампании: " + (count_male % dataList.Count) + "%",
-                "Статистика", MessageBoxButtons.OK);
-        }
-
+        // сохранение 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
@@ -275,11 +186,7 @@ namespace VMK_BindingData_DGV2022_04_05
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void infl_Click(object sender, EventArgs e)
-        {
-            Form form3 = new InflForm(dataList);
-            form3.ShowDialog();
-        }
+
     }
 
 }
